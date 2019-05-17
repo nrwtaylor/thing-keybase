@@ -36,12 +36,12 @@ bot
 
     // This suggests this is a DM so don't need
     // to watch for a keyword
-    if (stations.keys() == 1) {
+    match = false
+    if (stations.length == 1) {
       var to =  message.channel.name
     }
 
-
-    if (stations.keys() == 2) {
+    if (stations.length == 2) {
       match = true;
     }
 
@@ -52,6 +52,13 @@ bot
     if (subject.toLowerCase().includes('edna')) {
       match = true;
     }
+
+      console.log(to);
+      console.log(from);
+      console.log(subject);
+      console.log(match);
+
+
 
     if (match == false) {return;}
 
