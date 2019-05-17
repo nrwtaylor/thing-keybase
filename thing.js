@@ -36,6 +36,11 @@ bot
 
     // This suggests this is a DM so don't need
     // to watch for a keyword
+    if (stations.keys() == 1) {
+      var to =  message.channel.name
+    }
+
+
     if (stations.keys() == 2) {
       match = true;
     }
