@@ -53,6 +53,10 @@ bot
       match = true;
     }
 
+    if (subject.toLowerCase().includes('control')) {
+      match = true;
+    }
+
       console.log(to);
       console.log(from);
       console.log(subject);
