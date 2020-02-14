@@ -1,13 +1,19 @@
 const Bot = require('keybase-bot')
 
 const bot = new Bot()
-const username = 'ednabot'
+
+const username = 'abot'
+
+// Put your paper key here.
+// It will look something like this.
+// But is not this.
 const paperkey = 'treat pear fish asthma spike season sport physical addict fold remind venue lecture'
 
+// Use for debugging.
 const var_dump = require('var_dump')
 
+// Use Gearman to provide the stack connector.
 var gearmanode = require('gearmanode');
-//var client = gearmanode.client();
 
 
 bot
@@ -19,7 +25,11 @@ bot
 
     // Reply to incoming traffic on all channels
     const onMessage = message => {
-    var_dump(message)
+
+    // Some local logging/debugging.
+    // Uncomment to use.
+    //var_dump(message)
+
     stations =  message.channel.name.split(",")
 
     const channel = message.channel
@@ -28,6 +38,7 @@ bot
     // https://www.npmjs.com/package/gearmanode
     var client = gearmanode.client();
 
+    // Get the from, to and subject from the Keybase message.
     var from = message.channel.name
     var to =  message.sender.uid
     var subject = message.content.text.body
@@ -57,19 +68,19 @@ bot
       match = true;
     }
 
-      console.log(to);
-      console.log(from);
-      console.log(subject);
-      console.log(match);
-
-
+    // For debuging/testing.
+    // Uncomment.
+    //console.log(to);
+    //console.log(from);
+    //console.log(subject);
+    //console.log(match);
 
     if (match == false) {return;}
 
-    var arr = {"from":from,"to":to,"subject":subject} 
+    var arr = {"from":from,"to":to,"subject":subject}
     var datagram = JSON.stringify(arr) 
 
-    try {    
+    try {
     var job = client.submitJob('call_agent', datagram);
     }
 
@@ -81,27 +92,32 @@ bot
     }
 
     job.on('workData', function(data) {
+
+    // Uncomment for debugging/testing.
     //    console.log('WORK_DATA >>> ' + data);
+
     });
 
     job.on('complete', function() {
 
+        // Create a fallback message.
+        // Which says 'sms'.
         sms = "sms"
         message = "sms"
 
+        try {
+          var thing_report = JSON.parse(job.response);
+          var sms = thing_report.sms
+          var message = thing_report.message
+        }
 
-      try {
-        var thing_report = JSON.parse(job.response);
-        var sms = thing_report.sms
-        var message = thing_report.message
-      }
+        catch (e) {
+          console.log(e);
 
-      catch (e) {
-        console.log(e);
+          var sms = "quiet"
+          var message = "Quietness. Just quietness."
+        }
 
-        var sms = "quiet"
-        var message = "Quietness. Just quietness."
-}
         console.log(sms);
         console.log(message);
 
